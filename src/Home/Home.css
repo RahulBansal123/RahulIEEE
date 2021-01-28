@@ -1,0 +1,31 @@
+.Home {
+  display: flex;
+  flex-wrap: wrap;
+  background: #ebebe5;
+  padding: 20px;
+  width: 100%;
+  border-radius: 10px;
+}
+.Dropdown{
+  width: 50%;
+  display: inline-block;
+}
+.Search {
+  width: 100%;
+  margin: 10px 0;
+  height: 50px;
+}
+.Search input {
+  float: right;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  width: 400px;
+  height: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  padding: 18px 10px;
+  outline: 0;
+}
+.Search input:hover,
+.Search input:focus {
+  border: 2px solid #216975;
+}
