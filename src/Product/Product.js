@@ -1,23 +1,38 @@
 import React from 'react';
 import './Product.css';
-import Tilt from 'react-parallax-tilt';
-const Product = (props) => {
+
+const Product = ({ item, onClick, addCart, cart, onRemove }) => {
   return (
     <div className="Product">
-      <Tilt>
-        <div className="Product__img">
-          <img alt={props.name} src={props.img} />
+      <div className="Product__add">
+        {!cart && (
+          <button onClick={onClick}>
+            {addCart.includes(item) ? 'Added' : 'Add To Cart'}
+          </button>
+        )}
+      </div>
+      <div className="Product__img">
+        <img alt={item.title} src={item.image} />
+      </div>
+      <h2 className="Product__title">
+        {item.title.length > 50 ? `${item.title.slice(0, 50)}...` : item.title}
+      </h2>
+      <h2 className="Product__brand">
+        {item.description.length > 100
+          ? `${item.description.slice(0, 100)}...`
+          : item.description}
+      </h2>
+      <div className="Product__description">
+        <ul>
+          <li>Price: {item.price}</li>
+          <li>Category: {item.category}</li>
+        </ul>
+      </div>
+      {cart && (
+        <div className="Product__add">
+          <button onClick={onRemove}>Remove From Cart</button>
         </div>
-        <h1 className="Product__title">{props.name}</h1>
-        <h2 className="Product__brand">{props.brand}</h2>
-        <div className="Product__description">
-          <ul>
-            <li>Price: {props.price}</li>
-            <li>RAM: {props.ram}</li>
-            <li>ROM: {props.rom}</li>
-          </ul>
-        </div>
-      </Tilt>
+      )}
     </div>
   );
 };

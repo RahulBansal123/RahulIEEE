@@ -34,10 +34,25 @@
   font-size: 14px;
   line-height: 1.8em;
 }
+
+.Product__add button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  outline: none;
+  background-color: #216975;
+  color: #fff;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
 @media all and (max-width: 430px) {
   .Product {
-    min-width: 270px;}
-}@media all and (max-width: 390px) {
+    min-width: 270px;
+  }
+}
+@media all and (max-width: 390px) {
   .Product {
-    min-width: 200px;}
+    min-width: 200px;
+  }
 }

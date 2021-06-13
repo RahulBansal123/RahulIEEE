@@ -1,19 +1,18 @@
+import React, { useState } from 'react';
 import './App.css';
-import React from 'react';
-import Admin from './Uploader/Upload';
+import Cart from './Cart';
 import Home from './Home/Home';
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom';
+
 function App() {
+  const [addCart, setaddCart] = useState([]);
   return (
     <div className="App">
       <div className="App__header">
-        <div className="Logo">
-          <img alt="Logo" src="https://nulliot.com/static/images/null.png" />
-        </div>
         <div className="App__navbar">
           <ul>
-            <NavLink to="/admin" activeStyle={{ color: '#000' }}>
-              Admin
+            <NavLink to="/cart" activeStyle={{ color: '#000' }}>
+              Cart
             </NavLink>
             <NavLink to="/home" activeStyle={{ color: '#000' }}>
               Home
@@ -23,11 +22,11 @@ function App() {
       </div>
       <hr />
       <Switch>
-        <Route exact path="/admin">
-          <Admin />
+        <Route exact path="/cart">
+          <Cart addCart={addCart} setaddCart={setaddCart} />
         </Route>
         <Route exact path="/home">
-          <Home />
+          <Home addCart={addCart} setaddCart={setaddCart} />
         </Route>
         <Redirect from="/" to="/home" />
       </Switch>

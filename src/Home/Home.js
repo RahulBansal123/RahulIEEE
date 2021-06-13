@@ -1,74 +1,125 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './Home.css';
 import Dropdown from 'react-dropdown';
 import Product from '../Product/Product';
 import 'react-dropdown/style.css';
-const Home = () => {
-  const [prod, setProd] = useState([]);
-  const [local, setLocal] = useState([]);
-  const data = [];
-  useEffect(() => {
-    for (let i = 0; i < localStorage.length; i++) {
-      const a = localStorage.key(i);
-      const b = JSON.parse(localStorage.getItem(a));
-      data.push(b);
+
+const Home = ({ addCart, setaddCart }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategoryData, setSelectedCategoryData] = useState(null);
+  const [categories, setCategories] = useState(null);
+  const [data, setData] = useState(null);
+
+  const loadProducts = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('https://fakestoreapi.com/products');
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      const json = await response.json();
+      setData(json);
+    } catch (err) {
+      setError(err);
     }
-    setProd(data);
-    setLocal(data);
+  }, []);
+
+  const loadCategories = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(
+        'https://fakestoreapi.com/products/categories'
+      );
+      if (!response.ok) {
+        throw Error(response.statusText);
+      } else {
+        const json = await response.json();
+        setCategories(json);
+        setIsLoading(false);
+      }
+    } catch (err) {
+      setError(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadProducts();
+    loadCategories();
   }, []);
 
   const filterResult = (e) => {
-    const finalData = local.filter((prod) => {
+    const finalData = data?.filter((prod) => {
       return (
-        prod.Name.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1
+        prod.title.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1
       );
     });
-    setProd(finalData);
+    setSelectedCategoryData(finalData);
   };
 
-  const options = [
-    { value: '100000', label: 'Under 1 Lac' },
-    { value: '50000', label: 'Under 50K' },
-    { value: '20000', label: 'Under 20K' },
-    { value: '10000', label: 'Under 10K' },
-  ];
+  const options = [];
+  if (categories) {
+    for (const val in categories) {
+      options.push({ value: categories[val], label: categories[val] });
+    }
+  }
   const handleChange = (selectedOption) => {
-    const finalData = local.filter((prod) => {
-      return parseInt(prod.Price) < selectedOption.value;
+    const selected = data?.filter((prod) => {
+      return prod.category === selectedOption.value;
     });
-    setProd(finalData);
+    setSelectedCategory(selectedOption);
+    setSelectedCategoryData(selected);
   };
 
-  const a = prod.map((b) => {
-    return (
-      <Product
-        key={b.Name}
-        name={b.Name}
-        brand={b.Brand}
-        img={b.Image}
-        price={b.Price}
-        ram={b.RAM}
-        rom={b.ROM}
-      />
-    );
-  });
+  if (isLoading) return 'Loading...';
+  if (error) return 'Some error occured. Please try again later...';
 
   return (
-    <React.Fragment>
+    <>
       <div className="Search">
         <div className="Dropdown">
           <Dropdown
             options={options}
             onChange={handleChange}
-            value={options[0]}
-            placeholder="Select an option"
+            placeholder="Select a category"
+            value={selectedCategory}
           />
         </div>
-        <input placeholder="Type here..." onChange={(e) => filterResult(e)} />
+        <input placeholder="Search Here..." onChange={filterResult} />
       </div>
-      <div className="Home">{a}</div>
-    </React.Fragment>
+      <div className="Home">
+        {data && (
+          <>
+            {selectedCategoryData
+              ? selectedCategoryData.map((item) => {
+                  return (
+                    <Product
+                      key={item.id}
+                      item={item}
+                      addCart={addCart}
+                      onClick={() => setaddCart(() => [...addCart, item])}
+                    />
+                  );
+                })
+              : data.map((item) => {
+                  return (
+                    <Product
+                      key={item.id}
+                      item={item}
+                      addCart={addCart}
+                      onClick={() => setaddCart(() => [...addCart, item])}
+                    />
+                  );
+                })}
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
-export default Home;
+export default React.memo(Home);
