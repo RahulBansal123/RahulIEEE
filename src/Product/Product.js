@@ -2,12 +2,13 @@ import React from 'react';
 import './Product.css';
 
 const Product = ({ item, onClick, addCart, cart, onRemove }) => {
+  const isAdded = addCart.map((items) => items.id === item.id);
   return (
     <div className="Product">
       <div className="Product__add">
         {!cart && (
-          <button onClick={onClick}>
-            {addCart.includes(item) ? 'Added' : 'Add To Cart'}
+          <button onClick={isAdded.includes(true) ? onRemove : onClick}>
+            {isAdded.includes(true) ? 'Remove From Cart' : 'Add To Cart'}
           </button>
         )}
       </div>

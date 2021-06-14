@@ -22,6 +22,8 @@ const Home = ({ addCart, setaddCart }) => {
       }
       const json = await response.json();
       setData(json);
+      setIsLoading(false);
+      sessionStorage.setItem('products', JSON.stringify(json));
     } catch (err) {
       setError(err);
     }
@@ -37,19 +39,24 @@ const Home = ({ addCart, setaddCart }) => {
       );
       if (!response.ok) {
         throw Error(response.statusText);
-      } else {
-        const json = await response.json();
-        setCategories(json);
-        setIsLoading(false);
       }
+      const json = await response.json();
+      setCategories(json);
+      setIsLoading(false);
+      sessionStorage.setItem('category', JSON.stringify(json));
     } catch (err) {
       setError(err);
     }
   }, []);
 
   useEffect(() => {
-    loadProducts();
-    loadCategories();
+    if (!sessionStorage.getItem('products')) {
+      loadProducts();
+      loadCategories();
+    } else {
+      setData(JSON.parse(sessionStorage.getItem('products')));
+      setCategories(JSON.parse(sessionStorage.getItem('category')));
+    }
   }, []);
 
   const filterResult = (e) => {
@@ -73,6 +80,10 @@ const Home = ({ addCart, setaddCart }) => {
     });
     setSelectedCategory(selectedOption);
     setSelectedCategoryData(selected);
+  };
+
+  const onRemove = (item) => {
+    setaddCart(() => addCart.filter((cartItems) => cartItems.id !== item.id));
   };
 
   if (isLoading) return 'Loading...';
@@ -102,6 +113,7 @@ const Home = ({ addCart, setaddCart }) => {
                       item={item}
                       addCart={addCart}
                       onClick={() => setaddCart(() => [...addCart, item])}
+                      onRemove={() => onRemove(item)}
                     />
                   );
                 })
@@ -112,6 +124,7 @@ const Home = ({ addCart, setaddCart }) => {
                       item={item}
                       addCart={addCart}
                       onClick={() => setaddCart(() => [...addCart, item])}
+                      onRemove={() => onRemove(item)}
                     />
                   );
                 })}

@@ -8,7 +8,8 @@ const Cart = ({ addCart, setaddCart }) => {
   };
   const getPrice = () => {
     return addCart?.reduce(
-      (prevPrice, cartItems) => prevPrice + cartItems.price,
+      (prevPrice, cartItems) =>
+        Math.round((prevPrice + cartItems.price) * 100) / 100,
       0
     );
   };
@@ -20,11 +21,11 @@ const Cart = ({ addCart, setaddCart }) => {
   return (
     <>
       <div className="Search">Total Price: {getPrice()}</div>
-      <button className="Search" onClick={clearCart}>
-        Clear Cart{' '}
+      <button className="Clear-cart" onClick={clearCart}>
+        Clear Cart
       </button>
       <div className="Home">
-        {addCart &&
+        {addCart.length > 0 ? (
           addCart.map((item) => (
             <Product
               cart
@@ -34,7 +35,10 @@ const Cart = ({ addCart, setaddCart }) => {
               onClick={() => setaddCart(() => [...addCart, item])}
               onRemove={() => onRemove(item)}
             />
-          ))}
+          ))
+        ) : (
+          <p>Add some items in the cart</p>
+        )}
       </div>
     </>
   );

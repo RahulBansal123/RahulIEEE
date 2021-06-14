@@ -6,7 +6,7 @@
   width: 100%;
   border-radius: 10px;
 }
-.Dropdown{
+.Dropdown {
   width: 50%;
   display: inline-block;
 }
@@ -28,4 +28,13 @@
 .Search input:hover,
 .Search input:focus {
   border: 2px solid #216975;
+}
+
+.Clear-cart {
+  background-color: #216975;
+  color: #fff;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }

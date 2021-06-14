@@ -4,7 +4,7 @@ import Cart from './Cart';
 import Home from './Home/Home';
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom';
 
-function App() {
+const App = () => {
   const [addCart, setaddCart] = useState([]);
   return (
     <div className="App">
@@ -33,6 +33,6 @@ function App() {
       <div className="Footer">Made with love❤️ by RAHUL BANSAL!</div>
     </div>
   );
-}
+};
 
 export default App;
