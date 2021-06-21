@@ -1,3 +1,24 @@
+# E-commerce FakeStore
+A React-based website using the https://fakestoreapi.com/ API.
+
+# Live
+Project is live at https://rahulbansal123.github.io/RahulIEEE/
+
+# Features
+1. List all products
+2. List all categories
+4. List all products of a particular category
+5. Search any product
+6. Add products to the local cart (in state).
+7. A checkout section where you can users can see their entire cart
+8. Allow users to remove particular products
+9. Allow users to clear the cart
+10. Allow users to see a total amount
+
+### BONUS FEATURE:
+* Store the fetched products in session storage
+* Materai Design Guidelines followed correctly
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
