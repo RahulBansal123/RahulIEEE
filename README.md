@@ -2,7 +2,7 @@
 A React-based website using the https://fakestoreapi.com/ API.
 
 # Live
-Project is live at https://rahulbansal123.github.io/RahulIEEE/
+Project is live at https://github.com/RahulBansal123/React-FakeStore
 
 # Features
 1. List all products
